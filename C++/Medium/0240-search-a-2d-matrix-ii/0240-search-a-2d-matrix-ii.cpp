@@ -4,7 +4,7 @@ public:
         int m = matrix.size();
         int n  = matrix[0].size();
       
-        bool ans = false;
+   
         for(int i = 0 ; i < m ;i++){
               int low = 0;
               int high = n-1;
@@ -21,7 +21,7 @@ public:
 
 
         }
-        return ans;
+        return false;
         
     }
 };
