@@ -15,7 +15,7 @@ public:
             for( int j = 0 ; j < n ; j++){
                 if(isConnected[i][j] == 1 && i!= j){
                     ad[i].push_back(j);
-                    ad[j].push_back(i);
+                   
                 }
             }
         }
