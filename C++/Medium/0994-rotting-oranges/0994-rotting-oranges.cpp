@@ -1,48 +1,46 @@
-
 class Solution {
 public:
-
-    vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-
     int orangesRotting(vector<vector<int>>& grid) {
-        int minutes = -1;
-        int maxR = grid.size();
-        int maxC = grid[0].size();
-        while(true) {
-            bool updated = false;
-            vector<vector<int>> next = grid; // COPY GRID FOR NEXT MIN
+        int m = grid.size();
+        int n= grid[0].size();
+        int tim= 0;
 
-            for (int row = 0; row < maxR; row++) { // iterate over every cell. O(N) [# of rows]
-                for (int col = 0; col < maxC; col++) { // O (M) [# of cols]
-                    if (grid[row][col] != 2) continue; // if not rotten skip.
-
-                    for (const auto& [x, y] : dirs) { // check all dirs for fresh orange
-                        // check if out of bounds
-                        int nx = col + x;
-                        int ny = row + y;
-                        if (nx >= grid[0].size() || nx < 0) continue;
-                        if (ny >= grid.size() || ny < 0) continue;
-                        
-
-                        if (grid[ny][nx] == 1) { // yay spoil that.
-                            updated = true;
-                            next[ny][nx] = 2; // Update the next minutes grid
-                        }
-                    }
+        queue<pair<pair<int , int>, int>>q;
+        vector<vector<int>>vis(m , vector<int>(n ,0));
+        for( int i = 0 ; i < m ; i++){
+            for(int j = 0 ; j < n ; j++){
+                if(grid[i][j] == 2){
+                    q.push({{i , j }, 0});
+                    vis[i][j] = 2;
+                }
+                else{
+                    vis[i][j] = 0;
                 }
             }
-            grid = next;
-            minutes++;
-            if (!updated) break; // there was nothing changed. so theres no oranges to spoil.
-            // if not changed, it will exit.
         }
-        bool has = false;
-        for (const auto& row : grid) {
-            for (int col : row) {
-                if (col == 1) has = true;
+
+        int drow[4] = { -1, 0 , 1, 0};
+        int dcol[4] =  { 0 , 1,  0 , -1};
+        while(!q.empty()){
+            int row = q.front().first.first;
+            int col = q.front().first.second;
+             tim = q.front().second;
+            q.pop();
+            for(int i = 0 ; i < 4;i++){
+                int nrow = row + drow[i];
+                int ncol = col + dcol[i];
+                if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n  && !vis[nrow][ncol] && grid[nrow][ncol] == 1){
+                    q.push({{nrow, ncol} , tim+1});
+                    vis[nrow][ncol] = 2;
+                }
             }
         }
-        if (has) return -1;
-        return minutes;
+        for(int i = 0; i < m;i++){
+            for(int j = 0 ; j < n ; j++){
+                if(grid[i][j] == 1 && vis[i][j] == 0) return -1;
+               
+            }
+        }
+        return tim;
     }
 };
