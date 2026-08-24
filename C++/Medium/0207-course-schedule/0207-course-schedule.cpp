@@ -1,39 +1,35 @@
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        
-        vector<vector<int>> adj(numCourses);
-         for(auto it  : prerequisites){
-            int course = it[0]; // Dependent course
-            int prerequisite = it[1]; // Course that must be taken first
-            adj[prerequisite].push_back(course);
-         }
-
-        vector<int> indegree(numCourses , 0);
-         for( int i = 0; i< numCourses;i++){
-            for( auto it : adj[i]){
-                indegree[it]++;
-            }
-         }
-
-         queue<int>q;
-        for( int i = 0 ; i < numCourses;i++){
-            if(indegree[i] == 0){
+       int n = numCourses;
+       vector<int>adj[n];
+       for(auto it:prerequisites){
+        adj[it[1]].push_back(it[0]);
+       }
+       vector<int>indeg(n);
+       for( int i =0 ; i <n ; i++){
+        for(auto it : adj[i]){
+            indeg[it]++;
+        }
+       }
+       queue<int>q;
+        for(int i = 0;i < n ; i++){
+            if(indeg[i] == 0){
                 q.push(i);
             }
         }
-
-        vector<int>topo;
+        int cnt = 0;
         while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            topo.push_back(node);
-
-            for( auto it : adj[node]){
-                indegree[it]--;
-                if(indegree[it] == 0) q.push(it);
-            }
+          int node = q.front();
+          cnt++;
+          q.pop();
+          for(auto it : adj[node]){
+            indeg[it]--;
+            if(indeg[it]==0)q.push(it);
+          }
         }
-        return (topo.size() == numCourses);
+        if(cnt == n) return true;
+
+        return false;
     }
 };
