@@ -10,7 +10,7 @@ public:
        
 
     }
-    int rob(vector<int>& nums) {
+    int rob1(vector<int>& nums) {
         int n = nums.size();
         vector<int>dp(n+1, 0);
         dp[0] = nums[0];
@@ -26,5 +26,27 @@ public:
 
         }
         return dp[n-1];
+    }
+      int rob(vector<int>& nums) {
+        int n = nums.size();
+        
+        int prev = nums[0];
+      
+        int prev2 = 0;
+        for(int ind = 1; ind < n ;ind++){
+            
+           int pick = nums[ind];
+           if(ind -2 >= 0){
+             pick+= prev2;
+           } 
+
+             int not_pick = prev;
+           int   curr  = max(pick , not_pick);
+           prev2  = prev;
+             prev = curr;
+             
+
+        }
+        return prev;
     }
 };
