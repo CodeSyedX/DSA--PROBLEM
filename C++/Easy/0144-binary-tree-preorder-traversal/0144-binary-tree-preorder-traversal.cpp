@@ -17,15 +17,15 @@ public:
         stack<TreeNode*>st;
         st.push(root);
         while(!st.empty()){
-            TreeNode*node = st.top();
+            root = st.top();
     
             st.pop();
-             pre.push_back(node->val);
-            if(node->right!=NULL){
-                st.push(node->right);
+             pre.push_back(root->val);
+            if(root->right!=NULL){
+                st.push(root->right);
             }
-            if(node->left !=NULL){
-                st.push(node->left);
+            if(root->left !=NULL){
+                st.push(root->left);
             }
         }
         return pre;
