@@ -11,18 +11,29 @@
  */
 class Solution {
 public:
-    void Binarytreee(TreeNode*root, int n, vector<int> &res){
-        if(root == NULL) return;
-        if( n == res.size()) res.push_back(root->val);
-        Binarytreee(root->right,n+1,res);
-        Binarytreee(root->left,n+1,res);
-
-    }
     vector<int> rightSideView(TreeNode* root) {
-        vector<int>res;
-     
-        Binarytreee(root,0,res);
-        return res;
-        
+        if (!root) return {};
+        queue<pair<TreeNode* , int>>q;
+        map<int , int>mp;
+        q.push({root , 0});
+        while(!q.empty()){
+            auto p = q.front();
+            q.pop();
+            TreeNode* node = p.first;
+            int line = p.second;
+            mp[line] = node->val;
+            if(node->left != nullptr) {
+                q.push({node->left , line+1});
+
+            }
+            if(node->right != nullptr){
+                q.push({node->right , line+1});
+            }
+        }
+        vector<int>ans;
+        for(auto it : mp){
+                 ans.push_back(it.second);
+        }
+        return ans;
     }
 };
